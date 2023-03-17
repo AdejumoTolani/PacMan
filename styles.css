@@ -1,0 +1,47 @@
+.board{
+    display: flex;
+    flex-wrap: wrap;
+    width: 600px;
+    height: 580px;
+    border: 1px solid black;
+    margin: 0 auto;
+}
+.board div{
+    width: 20px;
+    height: 20px;
+}
+.wall{
+    background-color:wheat ;
+  
+}
+.pellet{
+    background-color:rgb(188, 143, 229);
+    border: 7px solid white;
+    box-sizing: border-box;
+}
+.ghost-home{
+    background-color:white;
+}
+.pac-man{
+    background-color:black;
+    border-radius: 10px;
+}
+.eaten{
+    background-color: rgb(117, 96, 96);
+}
+.Issy{
+    background-color: red;
+    border: 0px;
+}
+.Deborah{
+    background-color: green;
+    border: 0px;
+}
+.Temitope{
+    background-color: gold;
+    border: 0px;
+}
+.Francis{
+    background-color: purple;
+    border: 0px;
+}
