@@ -24,7 +24,7 @@
 }
 .pac-man{
     background-color:black;
-    border-radius: 10px;
+    border-radius: 50%;
 }
 .eaten{
     background-color: rgb(117, 96, 96);
@@ -44,4 +44,42 @@
 .Francis{
     background-color: purple;
     border: 0px;
+}
+.controls{
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    height: 120px;
+    width: 120px;
+    gap: 10px;
+}
+.left{
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+.up{
+    grid-column: 2/3;
+}
+.right{
+    grid-row:2/3 ;
+    grid-column: 3/4;
+}
+.down{
+    grid-column:2/3 ;
+    grid-row: 3/4;
+}
+@media screen and (max-width: 600px){
+    .board{
+        width: 240px;
+        height: 232px;
+    }
+    .board div{
+        width: 8px;
+        height: 8px;
+    }
+    .pellet{
+        border: 1px solid white;
+    }
+    
 }

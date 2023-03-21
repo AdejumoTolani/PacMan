@@ -1,4 +1,10 @@
 const board = document.querySelector('.board');
+const leftBtn = document.querySelector('.left')
+const rightBtn = document.querySelector('.right')
+const upBtn = document.querySelector('.up')
+const downBtn = document.querySelector('.down')
+
+
 const cells = [];
 let pacmanIndex = 420;
 const width = 30;
@@ -57,34 +63,78 @@ function createBoard(){
     }
 }
 createBoard();
-
+leftBtn.addEventListener('click',()=>{
+    cells[pacmanIndex].classList.remove('pac-man');
+    moveLeft();
+    eatPellets()
+    ifHitGhost()
+    cells[pacmanIndex].classList.add('pac-man')
+})
+rightBtn.addEventListener('click',()=>{
+    cells[pacmanIndex].classList.remove('pac-man');
+        moveRight();
+        eatPellets();
+        ifHitGhost();
+    cells[pacmanIndex].classList.add('pac-man')
+})
+upBtn.addEventListener('click',()=>{
+    cells[pacmanIndex].classList.remove('pac-man');
+        moveUp();
+        eatPellets();
+        ifHitGhost();
+    cells[pacmanIndex].classList.add('pac-man')
+})
+downBtn.addEventListener('click',()=>{
+    cells[pacmanIndex].classList.remove('pac-man');
+        moveDown();
+        eatPellets();
+        ifHitGhost();
+    cells[pacmanIndex].classList.add('pac-man')
+})
+function moveLeft(){
+    if(pacmanIndex % width != 0 && !cells[pacmanIndex - 1].classList.contains('wall')){
+        pacmanIndex -= 1;
+    }
+    else if(pacmanIndex == 420){
+        pacmanIndex = 449;
+    }
+}
+function moveRight(){
+    if(pacmanIndex % width < width - 1 && !cells[pacmanIndex + 1].classList.contains('wall')){
+        pacmanIndex += 1;
+    }
+    else if(pacmanIndex == 449){
+        pacmanIndex = 420}
+}
+function moveUp(){
+    if(pacmanIndex - width  >= 0 && !cells[pacmanIndex - width].classList.contains('wall')){
+        pacmanIndex -= width;
+    }else if(pacmanIndex == 14){
+        pacmanIndex = 854
+    }
+}
+function moveDown(){
+    if(pacmanIndex + width  < blueprint.length - 1 && !cells[pacmanIndex + width].classList.contains('wall')){
+        pacmanIndex += width;
+    }else if(pacmanIndex == 854){
+        pacmanIndex = 14
+    };
+}
 function movePacPac(e){
     cells[pacmanIndex].classList.remove('pac-man');
-    switch(e.keyCode){
-        
+    switch(e.keyCode){  
         case 37:
-            if(pacmanIndex % width != 0 && !cells[pacmanIndex - 1].classList.contains('wall')){
-                pacmanIndex -= 1;
-                console.log(e)
-            }
-            else if(pacmanIndex == 420){
-                pacmanIndex = 14;
-            }break;
+            moveLeft();
+           break;
         case 38:
-            if(pacmanIndex - width  >= 0 && !cells[pacmanIndex - width].classList.contains('wall')){
-                pacmanIndex -= width;
-            }break;
+            moveUp();
+            break;
         case 39:
-            if(pacmanIndex % width < width - 1 && !cells[pacmanIndex + 1].classList.contains('wall')){
-                pacmanIndex += 1;
-            }
-            else if(pacmanIndex == 449){
-                pacmanIndex = 420}break;
+            moveRight();
+            break;
         case 40:
-            if(pacmanIndex + width  < width * width && !cells[pacmanIndex + width].classList.contains('wall')){
-                pacmanIndex += width;
-            }break;
-    }
+           moveDown();
+        }
     eatPellets();
     ifHitGhost();
     cells[pacmanIndex].classList.add('pac-man')
@@ -108,10 +158,10 @@ class Ghost{
 }
 
 const ghosts = [
-    new Ghost(462,'Issy', 300),
     new Ghost(463,'Deborah',400),
-    new Ghost(465,'Temitope',450),
-    new Ghost(466,'Francis',500)
+    new Ghost(465,'Temitope',250),
+    new Ghost(462,'Issy', 300),
+    new Ghost(466,'Francis',350)
 ]
 ghosts.forEach((ghost)=>{
     cells[ghost.startIndex].classList.add('ghost');
