@@ -3,10 +3,15 @@ const leftBtn = document.querySelector(".left");
 const rightBtn = document.querySelector(".right");
 const upBtn = document.querySelector(".up");
 const downBtn = document.querySelector(".down");
-
+const popup = document.getElementById("popup");
+const popupWin = document.getElementById("popupWin");
+const restartButton = document.getElementById("restartButton");
+let returnTime = document.querySelector('.time')
+let clock = document.querySelector(".clock");
 const cells = [];
 let pacmanIndex = 420;
 let time = 0;
+let isGameOver = false
 const width = 30;
 let ghostIndex1 = 0;
 let moves = [-1, 1, width, -width];
@@ -162,6 +167,22 @@ function eatPellets() {
   if (cells[pacmanIndex].classList.contains("pellet")) {
     cells[pacmanIndex].classList.remove("pellet");
   }
+  if(checkWinCondition()){
+    ghosts.forEach((ghost) => clearInterval(ghost.timer));
+    document.removeEventListener("keyup", movePacPac);
+    clearInterval(timer);
+    popupWon();
+  }
+}
+function checkWinCondition() {
+  // Loop through all cells to check for remaining pellets
+  for (let i = 0; i < cells.length; i++) {
+    if (cells[i].classList.contains("pellet")) {
+      // There are still pellets remaining, game is not won yet
+      return false;
+    }
+  }
+  return true;
 }
 // ghost movements and creation
 class Ghost {
@@ -206,5 +227,36 @@ function ifHitGhost() {
     ghosts.forEach((ghost) => clearInterval(ghost.timer));
     document.removeEventListener("keyup", movePacPac);
     clearInterval(timer);
-  }
+    isGameOver = true;
+    popupRestart();
+}
+}
+let timing = setInterval(()=> {
+    clock.innerHTML = convertTime(time)
+}, 1000)
+function convertTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds}s`;
+}
+
+
+function popupRestart (){
+    popup.style.display = "flex";
+    returnTime.innerHTML += convertTime(time);
+    restartButton.addEventListener("click", () => {
+        // Code to restart the game goes here
+        window.location.href = "index.html"
+        popup.style.display = "none";
+    }); 
+}
+
+function popupWon(){
+    popupWin.style.display = "flex";
+    returnTime.innerHTML += convertTime(time)
+    restartButton.addEventListener("click", () => {
+      window.location.href = "index.html";
+      popupWin.style.display = "none";
+    }); 
+
 }
