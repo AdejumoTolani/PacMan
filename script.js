@@ -7,6 +7,7 @@ const popup = document.getElementById("popup");
 const popupWin = document.getElementById("popupWin");
 const restartButton = document.getElementById("restartButton");
 let returnTime = document.querySelector('.time')
+let returnTime2 = document.querySelector(".time2");
 let clock = document.querySelector(".clock");
 const cells = [];
 let pacmanIndex = 420;
@@ -234,6 +235,8 @@ function ifHitGhost() {
 let timing = setInterval(()=> {
     clock.innerHTML = convertTime(time)
 }, 1000)
+
+
 function convertTime(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
@@ -253,7 +256,7 @@ function popupRestart (){
 
 function popupWon(){
     popupWin.style.display = "flex";
-    returnTime.innerHTML += convertTime(time)
+    returnTime2.innerHTML += convertTime(time)
     restartButton.addEventListener("click", () => {
       window.location.href = "index.html";
       popupWin.style.display = "none";

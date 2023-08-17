@@ -14,7 +14,7 @@
   background-color: wheat;
 }
 .pellet {
-  background-color: rgb(155, 50, 65);
+  background-color: black;
   border: 8px solid white;
   box-sizing: border-box;
 }
@@ -22,7 +22,7 @@
   background-color: white;
 }
 .pac-man {
-  background-color: black;
+  background-color: red;
   border-radius: 50%;
 }
 .eaten {
@@ -32,7 +32,7 @@
 .Deborah,
 .Temitope,
 .Francis {
-  background-color: blue;
+  background-color: rgb(161, 212, 161);
   border: 0px;
 }
 .controls {
@@ -120,6 +120,6 @@ h4 {
   }
   .pellet {
     border: 2px solid white;
-    border-radius: 4px;
+    border-radius: 2px;
   }
 }
