@@ -83,7 +83,7 @@ h4 {
   font-size: larger;
   border: 1px solid blue;
 }
-.popup {
+.popup, .leaderboard {
     display: none;
     position: fixed;
     top: 0;
@@ -94,7 +94,7 @@ h4 {
     justify-content: center;
     align-items: center;
 }
-.popup-content {
+.popup-content, .boardContent {
     background-color: white;
     padding: 20px;
     text-align: center;
@@ -108,6 +108,21 @@ h4 {
     border: none;
     border-radius: 3px;
     cursor: pointer;
+}
+
+/* .leaderboard{
+  display: none;
+  position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+} */
+a{
+  cursor: pointer;
 }
 @media screen and (max-width: 600px) {
   .board {

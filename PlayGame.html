@@ -20,6 +20,7 @@
             <h2>Game Over</h2>
             <p>You lost the game!</p>
             <p class="time">Time: </p>
+            <a class="fetchLeaderboard">View leaderboard</a>
             <button id="restartButton">Restart</button>
         </div>
     </div>
@@ -28,9 +29,24 @@
             <h2>Nice.</h2>
             <p>You won the game!</p>
             <p class="time2">Time: </p>
+            <a class="fetchLeaderboard">View leaderboard</a>
             <button id="restartButton">Restart</button>
         </div>
     </div>
+    <div class="leaderboard">
+    <table class="boardContent">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboardBody">
+            <!-- Rows will be added dynamically here -->
+        </tbody>
+    </table>
+</div>
+
     <p class="clock"> </p>
     <script src="script.js"></script>
 </body>

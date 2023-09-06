@@ -6,13 +6,16 @@ const downBtn = document.querySelector(".down");
 const popup = document.getElementById("popup");
 const popupWin = document.getElementById("popupWin");
 const restartButton = document.getElementById("restartButton");
-let returnTime = document.querySelector('.time')
+let returnTime = document.querySelector(".time");
 let returnTime2 = document.querySelector(".time2");
 let clock = document.querySelector(".clock");
+let leaderBoard = document.querySelector(".leaderboard");
+let fetchBoard = document.querySelectorAll('.fetchLeaderboard')
+let url = "http://localhost:5500";
 const cells = [];
 let pacmanIndex = 420;
 let time = 0;
-let isGameOver = false
+let isGameOver = false;
 const width = 30;
 let ghostIndex1 = 0;
 let moves = [-1, 1, width, -width];
@@ -54,6 +57,14 @@ const blueprint = [
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ];
 
+
+
+function getName() {
+  const playerName = document.getElementById("name");
+  let Player = playerName.value;
+  localStorage.setItem("Player", Player);
+}
+
 function createBoard() {
   for (let i = 0; i < blueprint.length; i++) {
     let cell = document.createElement("div");
@@ -72,6 +83,7 @@ function createBoard() {
 }
 createBoard();
 ifHitGhost();
+// getScores();
 let timer = setInterval(() => {
   time++;
 }, 1000);
@@ -168,11 +180,13 @@ function eatPellets() {
   if (cells[pacmanIndex].classList.contains("pellet")) {
     cells[pacmanIndex].classList.remove("pellet");
   }
-  if(checkWinCondition()){
+  if (checkWinCondition()) {
     ghosts.forEach((ghost) => clearInterval(ghost.timer));
     document.removeEventListener("keyup", movePacPac);
     clearInterval(timer);
+    addScore();
     popupWon();
+    getScores();
   }
 }
 function checkWinCondition() {
@@ -218,24 +232,28 @@ function moveGhost(ghost) {
     } else {
       move = moves[Math.floor(Math.random() * moves.length)];
     }
-    ifHitGhost()
+    ifHitGhost();
   }, ghost.speed);
 }
 
 function ifHitGhost() {
-    //if ghost hits pac-man or pac-man hits ghost, game endssss
+  //if ghost hits pac-man or pac-man hits ghost, game endssss
   if (cells[pacmanIndex].classList.contains("ghost")) {
     ghosts.forEach((ghost) => clearInterval(ghost.timer));
     document.removeEventListener("keyup", movePacPac);
     clearInterval(timer);
     isGameOver = true;
     popupRestart();
+    getScores();
+  }
 }
-}
-let timing = setInterval(()=> {
-    clock.innerHTML = convertTime(time)
-}, 1000)
 
+let score;
+let timing = setInterval(() => {
+  score = convertTime(time)
+  clock.innerHTML = score;
+  // console.log(convertTime(time))
+}, 1000);
 
 function convertTime(seconds) {
   const minutes = Math.floor(seconds / 60);
@@ -244,22 +262,110 @@ function convertTime(seconds) {
 }
 
 
-function popupRestart (){
-    popup.style.display = "flex";
-    returnTime.innerHTML += convertTime(time);
-    restartButton.addEventListener("click", () => {
-        // Code to restart the game goes here
-        window.location.href = "index.html"
-        popup.style.display = "none";
-    }); 
+
+function popupRestart() {
+  popup.style.display = "flex";
+  returnTime.innerHTML += convertTime(time);
+  restartButton.addEventListener("click", () => {
+    window.location.href = "index.html";
+    popup.style.display = "none";
+  });
 }
 
-function popupWon(){
-    popupWin.style.display = "flex";
-    returnTime2.innerHTML += convertTime(time)
-    restartButton.addEventListener("click", () => {
-      window.location.href = "index.html";
-      popupWin.style.display = "none";
-    }); 
+function popupWon() {
+  popupWin.style.display = "flex";
+  returnTime2.innerHTML += convertTime(time);
+  restartButton.addEventListener("click", () => {
+    window.location.href = "index.html";
+    popupWin.style.display = "none";
+  });
+}
+
+async function addScore() {
+  const player = localStorage.getItem("Player")
+   if(player){
+      const response = await fetch(`${url}/addScore`, {
+        method: "POST",
+        body: JSON.stringify({
+          name: player,
+          score: time,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data)
+    }
+  console.log(player, score)
+}
+
+
+async function getScores(){
+  const res = await fetch(`${url}/leaderboard`)
+  const data = await res.json()
+  console.log(data)
+  fetchBoard.forEach(tag=>{
+    tag.addEventListener('click',()=>{
+      leaderBoard.style.display = 'flex'
+      popup.style.display = 'none';
+      popupWin.style.display = 'none'
+    })
+  })
+
+  const tbody = document.getElementById("leaderboardBody");
+  data.forEach((item, index)=>{
+    const row = tbody.insertRow();
+    const nameCell = row.insertCell(0);
+    const scoreCell = row.insertCell(1);
+
+    nameCell.textContent = item.name;
+    scoreCell.textContent = item.score;
+  })
+
 
 }
+
+
+
+// function getPacmanPosition() {
+//   return cells.findIndex((cell) => cell.classList.contains("pac-man"));
+// }
+
+
+// function moveGhost(ghost) {
+//   ghost.timer = setInterval(() => {
+//     const pacmanPosition = getPacmanPosition();
+
+//     Calculate the direction towards Pac-Man
+//     const direction = calculateDirection(ghost.ghostIndex, pacmanPosition);
+
+//     Check if the next cell in the calculated direction is not a wall or another ghost
+//     if (
+//       !cells[ghost.ghostIndex + direction].classList.contains("wall") &&
+//       !cells[ghost.ghostIndex + direction].classList.contains("ghost")
+//     ) {
+//       Move the ghost in the calculated direction
+//       cells[ghost.ghostIndex].classList.remove(ghost.name, "ghost");
+//       ghost.ghostIndex += direction;
+//       cells[ghost.ghostIndex].classList.add(ghost.name, "ghost");
+//     }
+
+//     Check if the ghost has caught Pac-Man
+//     if (ghost.ghostIndex === pacmanPosition) {
+//       Handle game over condition here
+//     }
+//   }, ghost.speed);
+// }
+
+// function calculateDirection(ghostPosition, pacmanPosition) {
+//   const horizontalDistance = (pacmanPosition % width) - (ghostPosition % width);
+//   const verticalDistance =
+//     Math.floor(pacmanPosition / width) - Math.floor(ghostPosition / width);
+
+//   if (Math.abs(horizontalDistance) > Math.abs(verticalDistance)) {
+//     return horizontalDistance > 0 ? 1 : -1;
+//   } else {
+//     return verticalDistance > 0 ? width : -width;
+//   }
+// }
