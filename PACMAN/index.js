@@ -20,8 +20,10 @@ app.use(
 
 
 const connect = async () => {
+  const MONGO_URL =
+    "mongodb+srv://eshorahme:tee12dee03@pacman.p8nq08i.mongodb.net/";
   try {
-    await mongoose.connect(process.env.MONGO_URL);
+    await mongoose.connect(MONGO_URL);
     console.log("Connected!");
   } catch (err) {
     console.log(err);
